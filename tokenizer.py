@@ -7,6 +7,7 @@ class Tokenizer:
 	db = None
 	out_file = file("output.csv",'wt')
 	csv_w = csv.writer(out_file)
+	punc_list = ['.',',',':','(',')','&','|','-','@','#']
 
 	def __init__(self,config,db):
 		self.config = config
@@ -16,12 +17,25 @@ class Tokenizer:
 	def tokenize(self):
 		tokens = dict()
 		for tweet in db.tweets.find():
-			for token in tweet["text"].split(' '):
+			for token in self.stripPunc(tweet["text"]).split(' '):
+				token = token.lower()
+				if self.checkIgnore(token): continue
+				if tweet["handle"] in config["mute"]: continue 
 				if(not tokens.has_key(token)):
 					tokens[token] = 1
 				else :
 					tokens[token] = tokens[token] + 1
 		return tokens
+
+	def stripPunc(self,txt):
+		for i in self.punc_list:
+			txt = txt.replace(i,"")
+		return txt
+
+	def checkIgnore(self,txt):
+		if len(txt) is 1 : return True
+		if txt is " " : return True
+		return False
 
 	def printResult(self,tokens):
 		csv = None

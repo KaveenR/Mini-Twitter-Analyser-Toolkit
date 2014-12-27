@@ -1,6 +1,7 @@
 {
 	"project-name":"Test",
 	"listners":["#Test"],
+	"mute":["CAT"],
 	"auth":{
 		"consumer_key":"",
 		"consumer_secret":"",
