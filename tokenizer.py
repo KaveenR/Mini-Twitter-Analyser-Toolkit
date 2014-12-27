@@ -48,10 +48,7 @@ class Tokenizer:
 		for t in sorted(tokens, key=tokens.get, reverse = True):
 			if tokens[t] > valid_pr:
 				print(unicode(t) + "\t\t==>\t"+ unicode(tokens[t]))
-				try:
-					self.csv_w.writerow((unicode(t) ,unicode(tokens[t])))
-				except:
-					pass
+				self.csv_w.writerow((t.encode('utf-8') ,str(tokens[t])))
 		self.out_file.close()
 
 
